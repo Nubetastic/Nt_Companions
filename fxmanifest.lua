@@ -26,6 +26,7 @@ server_scripts {
 
 dependencies {
     'rsg-core',
+    'rsg-inventory',
     'ox_lib'
 }
 
