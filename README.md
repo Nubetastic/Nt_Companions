@@ -1,6 +1,10 @@
 # Nt Companions
 
-A companion and pet shop resource for RedM servers using RSG Core. Players can purchase and manage multiple dogs, name an active pet, feed and raise it, issue follow/stay commands, use it for defense, and retrieve hunted animals.
+A companion and pet shop resource for RedM servers using RSG Core.
+Players can purchase and manage multiple dogs, name an active pet.
+Will fetch small animals on its own only if the player owner kills them.
+Dog cannot die, it will run off when gets too hurt and needs time before it can return.
+Food is need to keep the pet out. It will get hungry over time, and will run off if not feed but can be called back after a while.
 
 ## Dependencies
 
