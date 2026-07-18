@@ -35,6 +35,11 @@ local Translations = {
 	petshop = 'Kisállat menhely',
 	petshop_2 = 'Kisállat bolt',
 	petshop_3 = 'Kisállat örökbeadása',
+	manage_pets = 'Kisállatok kezelése',
+	name_pet = 'Háziállat elnevezése',
+	set_active = 'Aktívvá tétel',
+	sell_pet = 'Háziállat eladása',
+	pet_name = 'Háziállat neve',
 	},
 }
 

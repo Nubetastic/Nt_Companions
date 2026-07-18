@@ -1,65 +1,27 @@
-#  REDM - TBRP-COMPANIONS - A script for RSG framework
+# Nt Companions
 
-## Description
+A companion and pet shop resource for RedM servers using RSG Core. Players can purchase and manage multiple dogs, name an active pet, feed and raise it, issue follow/stay commands, use it for defense, and retrieve hunted animals.
 
-With this script players are able to own pets that can retrieve hunted prey, track targets or even attack your enemies. Pets need to be raised as well as require food every so often and won't retrieve hunted prey if they are hungry. Pets can be set to automatically hostile targets that attack you as well. Simply look at your pet and hold right-click to access the many different options. Doing the same on other targets will show you their attack/track prompts.
+## Dependencies
 
-## Features
+- `rsg-core`
+- `ox_lib`
+- `oxmysql`
 
-• Purchase pets
+## Installation
 
-• Raise pets by feeding them when they're hungry
+1. Import `installation/tbrp_companions.sql` into your database.
+2. Add the `pet_food` item to your RSG Core shared items.
+3. Copy the images from `installation/images` to `rsg-inventory/html/images`.
+4. Add `ensure Nt_Companions` to `server.cfg` after its dependencies.
+5. Adjust shops, pets, prices, controls, feeding, and behavior in `config.lua`. Retrieval settings and supported animals are in `configFetch.lua`.
 
-• Pets will grow in size as they get older
+By default, pet shelters are located in Valentine and Blackwater. Press **Z** to call the active pet and **E** to feed it when aiming without a weapon at the pet.
 
-• Full grown pets gain new abilities
+## Radial buttons
 
-• Give commands like sit and follow
-
-• Pets can retrieve hunted animals (Hunt Mode)
-
-• Pets can be set to track targets
-
-• Pets can be set to attack targets
-
-• Pets will hostile anyone in combat with owner
-
-• Hungry pets won't retrieve
-
-• /callpet to spawn your pet
-
-• /fleepet to make your pet flee
-
-• Optimized - Idles at 0.01ms with pet out	
-
-• Almost everything can be toggled in the config
-
-• Locale config.
-    - Currently supports [en] and [hu]
-
-
-## How to Install
-1. Put tbrp_companions in your `resources` folder
-2. Enter `ensure tbrp_companions` in your server.cfg
-3. Import the `tbrp_companions.sql` into `installation` folder
-4. Import `installation\images\` into `rsg-inventory\html\images\`
-5. Go through `config.lua` before restarting your server
-
-## RSG-Radialmenu
-
-    [6] = { -- Change it to your side
-        id = 'pet',
-        title = 'Pet menu',
-        icon = 'dog',
-        items = {
+```lua
             {
-                id = 'loadpet',
-                title = 'Call pet',
-                icon = 'dog',
-                type = 'server',
-                event = 'tbrp_companions:loaddog',
-                shouldClose = true
-            }, {
                 id = 'petawaypet',
                 title = 'Putaway pet',
                 icon = 'dog',
@@ -67,8 +29,12 @@ With this script players are able to own pets that can retrieve hunted prey, tra
                 event = 'tbrp_companions:putaway',
                 shouldClose = true
             },
-        },
-    },
-
-## Disclaimers and Credits
-- This is a heavy modification of [rdn_companions] and [bwrp_animalshelter], converted to RSG and modified by [Szileni]
+            {
+                id = 'loadpet',
+                title = 'Call pet',
+                icon = 'dog',
+                type = 'server',
+                event = 'tbrp_companions:loaddog',
+                shouldClose = true
+            },
+```

@@ -1,7 +1,7 @@
 local Translations = {
     error = {
-	nopet = 'You dont have a pet',
-	nofood = 'You dont have any food that your little friend can eat...',
+	nopet = 'No Pet Food',
+	nofood = 'No Pet Food. Purchase it at the general store.',
 	nomoney = 'You dont have enough money to adopt a pet!',
 	petdead = 'Your pet has died!',
 	notretrieve = 'Your pet cannot be called back!',
@@ -35,6 +35,11 @@ local Translations = {
 	petshop = 'Pet Shelter',
 	petshop_2 = 'Pet Shop',
 	petshop_3 = 'Sell Pet',
+	manage_pets = 'Manage Pets',
+	name_pet = 'Name Pet',
+	set_active = 'Set Active',
+	sell_pet = 'Sell Pet',
+	pet_name = 'Pet Name',
 	},
 }
 

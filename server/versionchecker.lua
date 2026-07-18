@@ -1,40 +1,50 @@
-local RSGCore = exports['rsg-core']:GetCoreObject()
+-- Drop-in version checker for Nt_ resources.
+-- Each GitHub repository must have the same name as its resource folder and use
+-- the main branch. The version is read from the `version` entry in fxmanifest.lua.
 
------------------------------------------------------------------------
--- version checker
------------------------------------------------------------------------
-local function versionCheckPrint(_type, log)
-    local color = _type == 'success' and '^2' or '^3'
+local githubRoot = 'https://raw.githubusercontent.com/Nubetastic'
 
-    print(('^9['..GetCurrentResourceName()..']%s %s^7'):format(color, log))
+local resourceName = GetCurrentResourceName()
+local currentVersion = GetResourceMetadata(resourceName, 'version', 0)
+local manifestUrl = ('%s/%s/main/fxmanifest.lua'):format(githubRoot, resourceName)
+local repositoryUrl = ('https://github.com/Nubetastic/%s'):format(resourceName)
+
+local function versionCheckPrint(kind, message)
+    local color = kind == 'success' and '^2' or '^1'
+    print(('^5[%s] %s%s^7'):format(resourceName, color, message))
 end
 
-local function CheckVersion()
-    PerformHttpRequest('https://raw.githubusercontent.com/szileni/tbrp-companions/main/version.txt', function(err, text, headers)
-        local currentVersion = GetResourceMetadata(GetCurrentResourceName(), 'version')
+local function checkVersion()
+    if not currentVersion or currentVersion == '' then
+        versionCheckPrint('error', "No 'version' entry was found in fxmanifest.lua.")
+        return
+    end
 
-        if not text then 
-            versionCheckPrint('error', 'Currently unable to run a version check.')
-            return 
+    PerformHttpRequest(manifestUrl, function(statusCode, response)
+        if statusCode ~= 200 or not response then
+            versionCheckPrint('error', ('Version check failed (HTTP %s).'):format(statusCode or 'unknown'))
+            return
         end
 
---        versionCheckPrint('success', ('Current Version: %s'):format(currentVersion))
---        versionCheckPrint('success', ('Latest Version: %s'):format(text))
-        
-        if text == currentVersion then
-            versionCheckPrint('success', 'You are running the latest version.')
+        -- Prefix a newline so this also works when `version` is the first line.
+        -- Anchoring to a line prevents this from matching `fx_version`.
+        local latestVersion = ('\n' .. response):match("[\r\n]%s*version%s*['\"]([^'\"]+)['\"]")
+
+        if not latestVersion then
+            versionCheckPrint('error', "The remote fxmanifest.lua has no readable 'version' entry.")
+            return
+        end
+
+        if latestVersion == currentVersion then
+            versionCheckPrint('success', ('Version %s is up to date.'):format(currentVersion))
         else
-            versionCheckPrint('error', ('You are currently running an outdated version, please update to version %s'):format(text))
+            versionCheckPrint('error', ('Version %s is outdated. Latest: %s - %s'):format(
+                currentVersion,
+                latestVersion,
+                repositoryUrl
+            ))
         end
-    end)
+    end, 'GET')
 end
 
------------------------------------------------------------------------
-
-
------------------------------------------------------------------------
-
---------------------------------------------------------------------------------------------------
--- start version check
---------------------------------------------------------------------------------------------------
-CheckVersion()
+checkVersion()
